@@ -1,5 +1,4 @@
 <template>
-    
     <!--
     <div class="grid grid-cols-5 grid-rows-5 bg-pampas-50 h-96">
         <div class="flex flex-col justify-center items-start row-span-4 border-black border-r border-b border-t-2 border-l-2 pl-10 text-l ">
@@ -25,5 +24,4 @@
         <div class="col-start-5 row-start-5 border-black border-t border-l border-b-2 border-r-2">16</div>
     </div>
     -->
-    
 </template>

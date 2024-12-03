@@ -1,23 +1,30 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
-  modules: [
-    '@nuxt/ui',
-    '@nuxtjs/tailwindcss',
-    '@sidebase/nuxt-auth'
-  ],
-  router: {
-    options: {
-      scrollBehaviorType: 'smooth'
-    }
-  },
-  auth: {
-    provider: {
-      type: 'authjs'
+    devtools: { enabled: true },
+    modules: [
+        "@nuxt/ui",
+        "@nuxtjs/tailwindcss",
+        "@sidebase/nuxt-auth",
+        "@nuxtjs/google-fonts",
+    ],
+    router: {
+        options: {
+            scrollBehaviorType: "smooth",
+        },
     },
-    globalAppMiddleware: {
-      isEnabled: true
+    auth: {
+        provider: {
+            type: "authjs",
+        },
+        globalAppMiddleware: {
+            isEnabled: true,
+        },
+        baseURL: `http://localhost:${process.env.PORT ?? 3000}`,
     },
-    baseURL: `http://localhost:${process.env.PORT ?? 3000}`
-  }
-})
+    googleFonts: {
+        families: {
+            Inter: "100..900",
+        },
+        display: "swap",
+    },
+});

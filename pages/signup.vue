@@ -22,6 +22,8 @@ const csrfToken = await getCsrfToken();
 
 const email = ref("");
 const password = ref("");
+const name = ref("");
+const confirmPassword = ref("");
 
 // TEMP: Due to a bug in Nuxt `$fetch` (and thus in `useFetch`),
 // we need to transform `undefined` returned from `$fetch` to `null`.
@@ -36,7 +38,13 @@ const password = ref("");
   }
 )*/
 
-const handleSignIn = async () => {
+const handleSignUp = async () => {
+    if(password.value !== confirmPassword.value) {
+        console.error("Passwords do not match");
+        password.value = "";
+        confirmPassword.value = "";
+        return;
+    }
     try {
         const response = await signIn("credentials", {
             callbackUrl: "/",
@@ -50,7 +58,7 @@ const handleSignIn = async () => {
             console.log("Login successful");
         }
     } catch (err) {
-        console.error("An error occurred during sign-in:", err);
+        console.error("An error occurred during sign-up:", err);
     }
 };
 </script>
@@ -62,9 +70,19 @@ const handleSignIn = async () => {
     <h1
         class="text-2xl font-sans font-extrabold mb-6 text-center text-gray-800"
     >
-        Log in or Sign Up
+        Sign Up
     </h1>
-    <form @submit.prevent="handleSignIn" class="space-y-4">
+    <form @submit.prevent="handleSignUp" class="space-y-4">
+        <UInput
+            type="text"
+            v-model="name"
+            color="white"
+            variant="outline"
+            placeholder="Name"
+            size="lg"
+            class="w-full rounded-md"
+            required
+        />
         <UInput
             type="text"
             v-model="email"
@@ -73,6 +91,7 @@ const handleSignIn = async () => {
             placeholder="Email"
             size="lg"
             class="w-full rounded-md"
+            required
         />
         <UInput
             type="password"
@@ -82,6 +101,17 @@ const handleSignIn = async () => {
             placeholder="Password"
             size="lg"
             class="w-full rounded-md"
+            required
+        />
+        <UInput
+            type="password"
+            v-model="confirmPassword"
+            color="white"
+            variant="outline"
+            placeholder="Confirm Password"
+            size="lg"
+            class="w-full rounded-md"
+            required
         />
         <button
             type="submit"
@@ -89,29 +119,12 @@ const handleSignIn = async () => {
         >
             Login
         </button>
-        <NuxtLink to="/signup">
+        <NuxtLink to="/login">
             <button
-                class="mt-4 w-full bg-white text-pampas-600 font-medium py-2 rounded-md hover:bg-gray-300 transition border border-pampas-600"
+                class="w-full bg-white text-pampas-600 font-medium py-2 mt-4 rounded-md hover:bg-gray-300 transition border border-pampas-600"
             >
-                Sign Up
+                Go back to Login
             </button>
         </NuxtLink>
     </form>
-
-    <span
-        class="flex items-center text-center mt-4 text-gray-600 font-extralight"
-    >
-        <span class="flex-grow h-px bg-gray-300"></span>
-        <span class="px-4">or</span>
-        <span class="flex-grow h-px bg-gray-300"></span>
-    </span>
-
-    <div class="mt-4 text-center">
-        <button
-            @click="signIn('github', { callbackUrl: '/' })"
-            class="w-full bg-gray-700 text-white font-medium py-2 rounded-md hover:bg-gray-800 transition"
-        >
-            Login with GitHub
-        </button>
-    </div>
 </template>
