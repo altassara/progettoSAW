@@ -40,7 +40,7 @@ const handleSignIn = async () => {
     try {
         const response = await signIn("credentials", {
             callbackUrl: "/",
-            username: email.value,
+            email: email.value,
             password: password.value,
         });
 
@@ -73,6 +73,7 @@ const handleSignIn = async () => {
             placeholder="Email"
             size="lg"
             class="w-full rounded-md"
+            required
         />
         <UInput
             type="password"
@@ -82,6 +83,7 @@ const handleSignIn = async () => {
             placeholder="Password"
             size="lg"
             class="w-full rounded-md"
+            required
         />
         <button
             type="submit"

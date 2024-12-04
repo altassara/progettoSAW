@@ -1,11 +1,14 @@
 import { hash } from 'bcrypt';
 import { UserModel } from '~/server/models/user';
 import nodemailer from 'nodemailer';
+import connectDB from '~/server/utils/db';
+
+connectDB();
+
 
 export default defineEventHandler(async (event) => {
-  const { email, password } = await readBody(event);
-
-  // Verifica che l'email non esista già
+  const { email, password, name } = await readBody(event);
+  console.log(email + password + name);
   const existingUser = await UserModel.findOne({ email });
   if (existingUser) {
     throw createError({
@@ -13,32 +16,31 @@ export default defineEventHandler(async (event) => {
       message: 'Email already in use.',
     });
   }
-
   // Hash della password
   const hashedPassword = await hash(password, 10);
-
+  
   // Creazione dell'utente
   const newUser = new UserModel({
-    email,
+    name: name,
+    email: email,
     password: hashedPassword,
-    createdAt: new Date(),
     verified: false,
   });
-
+  
   await newUser.save();
-
   // Invia una mail di verifica
   const transporter = nodemailer.createTransport({
-    service: 'Gmail', // o il tuo provider SMTP
+    service: process.env.SMTP_SERVICE ??'yahoo',
+    secure: false, 
     auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASSWORD,
+      user: process.env.SMTP_USER ?? 'anna.bianchi007@yahoo.com',
+      pass: process.env.SMTP_PASSWORD ?? 'gcbycratsblrljvi',
     },
   });
 
-  const verificationLink = `${process.env.BASE_URL}/verify?email=${email}`;
+  const verificationLink = `${process.env.BASE_URL ?? 'http://localhost:3000'}/api/auth/verify?email=${email}`;
   await transporter.sendMail({
-    from: process.env.SMTP_USER,
+    from: process.env.SMTP_USER ?? 'anna.bianchi007@yahoo.com',
     to: email,
     subject: 'Verify your account',
     html: `<p>Click <a href="${verificationLink}">here</a> to verify your account.</p>`,

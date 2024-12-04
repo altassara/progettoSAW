@@ -3,6 +3,7 @@ import GithubProvider from "next-auth/providers/github";
 import { NuxtAuthHandler } from "#auth";
 import connectDB from "~/server/utils/db";
 import { UserModel } from "~/server/models/user";
+import bcrypt from "bcrypt";
 
 connectDB();
 
@@ -38,10 +39,7 @@ export default NuxtAuthHandler({
                 },
             },
             async authorize(credentials: any) {
-                // You need to provide your own logic here that takes the credentials
-                // submitted and returns either a object representing a user or value
-                // that is false/null if the credentials are invalid.
-                // NOTE: THE BELOW LOGIC IS NOT SAFE OR PROPER FOR AUTHENTICATION!
+
                 const user = await UserModel.findOne({
                     email: credentials.email,
                 });
@@ -49,10 +47,16 @@ export default NuxtAuthHandler({
                 if (
                     user &&
                     credentials?.email === user.email &&
-                    credentials?.password === user.password
+                    await bcrypt.compare(credentials.password.toString(), user.password ?? "") &&
+                    user.verified === true
                 ) {
                     // Any object returned will be saved in `user` property of the JWT
                     return user;
+                }
+                if(user && user.verified === false) {
+                    console.error(
+                        "Warning: verify your email before logging in",
+                    );
                 }
 
                 console.error(

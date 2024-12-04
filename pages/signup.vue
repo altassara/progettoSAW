@@ -15,28 +15,15 @@ const {
 definePageMeta({
     auth: false,
     layout: "login",
+    unauthenticatedOnly: true,
+    navigateAuthenticatedTo: '/'
 });
-
-const providers = await getProviders();
-const csrfToken = await getCsrfToken();
+const router = useRouter();
 
 const email = ref("");
 const password = ref("");
 const name = ref("");
 const confirmPassword = ref("");
-
-// TEMP: Due to a bug in Nuxt `$fetch` (and thus in `useFetch`),
-// we need to transform `undefined` returned from `$fetch` to `null`.
-// The issue seems to be in type coalescing happening under the hood of `$fetch`:
-// `null` and `''` are both transformed into `undefined` which is not correct.
-/*const { data: token } = await useAsyncData(
-  '/api/token',
-  async () => {
-    const headers = useRequestHeaders(['cookie'])
-    const result = await $fetch('/api/token', { headers })
-    return result ?? null
-  }
-)*/
 
 const handleSignUp = async () => {
     if(password.value !== confirmPassword.value) {
@@ -46,16 +33,15 @@ const handleSignUp = async () => {
         return;
     }
     try {
-        const response = await signIn("credentials", {
-            callbackUrl: "/",
-            username: email.value,
-            password: password.value,
+        const {error} = await useFetch('/api/auth/signup', {
+            method: 'POST',
+            body: { email: email.value, password: password.value, name: name.value },
         });
-
-        if (response?.error) {
-            console.error("Login failed:", response.error);
+        if (error.value) {
+            console.error("SIGNUP FAILED", error);
         } else {
-            console.log("Login successful");
+            console.log("signup successful");
+            router.push({ path: '/verify-pending', query: { email: email.value } });
         }
     } catch (err) {
         console.error("An error occurred during sign-up:", err);
@@ -117,7 +103,7 @@ const handleSignUp = async () => {
             type="submit"
             class="w-full bg-pampas-600 text-white font-medium py-2 rounded-md hover:bg-pampas-900 transition"
         >
-            Login
+            Sign up
         </button>
         <NuxtLink to="/login">
             <button
