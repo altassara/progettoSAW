@@ -39,7 +39,6 @@ export default defineEventHandler(async (event) => {
 
         user.verified = true;
         await user.save();
-        console.log("ciaooo2");
 
         return { message: "Account verified successfully." };
     } catch (error) {

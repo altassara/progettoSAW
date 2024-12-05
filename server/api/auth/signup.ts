@@ -8,7 +8,6 @@ connectDB();
 
 export default defineEventHandler(async (event) => {
     const { email, password, name } = await readBody(event);
-    console.log(email + password + name);
     const existingUser = await UserModel.findOne({ email });
     if (existingUser) {
         throw createError({

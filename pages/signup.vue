@@ -44,7 +44,6 @@ const handleSignUp = async () => {
         if (error.value) {
             console.error("SIGNUP FAILED", error);
         } else {
-            console.log("signup successful");
             router.push({
                 path: "/verify-pending",
                 query: { email: email.value },

@@ -49,8 +49,6 @@ const handleSignIn = async () => {
         if (response?.error) {
             console.error("Login failed:", response.error);
             error.value = true;
-        } else {
-            console.log("Login successful");
         }
     } catch (err) {
         console.error("An error occurred during sign-in:", err);
