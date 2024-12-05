@@ -1,3 +1,12 @@
+<script setup>
+
+definePageMeta({
+    auth: false,
+    layout: "default",
+});
+
+</script>
+
 <template>
     <section
         class="bg-black flex flex-col justify-center items-center min-h-screen"
@@ -5,12 +14,12 @@
         <h1 class="text-white font-serif text-8xl">Volume Three Studios</h1>
         <NuxtLink
             to="/#intro"
-            class="border-white border-2 mt-4 p-4 text-white text-xl hover:bg-pampas-600"
+            class="border-white border-2 mt-4 p-4 text-white text-xl hover:bg-navy-blue-950"
             >LEARN MORE</NuxtLink
         >
     </section>
-    <div class="bg-pampas-50 min-h-screen flex" id="intro">
-        <div class="bg-pampas-400 w-2/5 h-screen">
+    <div class="bg-navy-blue-50 min-h-screen flex" id="intro">
+        <div class="bg-navy-blue-400 w-2/5 h-screen">
             <img
                 src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/old-books-in-library-shelf-luoman.jpg"
                 alt="Descrizione dell'immagine"

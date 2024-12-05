@@ -22,6 +22,7 @@ const csrfToken = await getCsrfToken();
 
 const email = ref("");
 const password = ref("");
+const error = ref(false);
 
 // TEMP: Due to a bug in Nuxt `$fetch` (and thus in `useFetch`),
 // we need to transform `undefined` returned from `$fetch` to `null`.
@@ -42,10 +43,12 @@ const handleSignIn = async () => {
             callbackUrl: "/",
             email: email.value,
             password: password.value,
+            redirect: true,
         });
 
         if (response?.error) {
             console.error("Login failed:", response.error);
+            error.value = true;
         } else {
             console.log("Login successful");
         }
@@ -64,6 +67,12 @@ const handleSignIn = async () => {
     >
         Log in or Sign Up
     </h1>
+    <span
+        v-if="error"
+        class="flex items-center text-center mt-4 text-gray-600 font-extralight text-xs"
+    >
+        check your credentials
+    </span>
     <form @submit.prevent="handleSignIn" class="space-y-4">
         <UInput
             type="text"
@@ -87,13 +96,13 @@ const handleSignIn = async () => {
         />
         <button
             type="submit"
-            class="w-full bg-pampas-600 text-white font-medium py-2 rounded-md hover:bg-pampas-900 transition"
+            class="w-full bg-navy-blue-950 text-white font-medium py-2 rounded-md hover:bg-navy-blue-900 transition"
         >
             Login
         </button>
         <NuxtLink to="/signup">
             <button
-                class="mt-4 w-full bg-white text-pampas-600 font-medium py-2 rounded-md hover:bg-gray-300 transition border border-pampas-600"
+                class="mt-4 w-full bg-white text-navy-blue-950 font-medium py-2 rounded-md hover:bg-gray-300 transition border border-navy-blue-950"
             >
                 Sign Up
             </button>
@@ -114,6 +123,11 @@ const handleSignIn = async () => {
             class="w-full bg-gray-700 text-white font-medium py-2 rounded-md hover:bg-gray-800 transition"
         >
             Login with GitHub
+            <img
+                src="/github-mark-white.svg"
+                alt="GitHub logo"
+                class="w-5 h-5 inline-block ml-1 mb-1"
+            />
         </button>
     </div>
 </template>

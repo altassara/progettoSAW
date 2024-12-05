@@ -15,8 +15,6 @@ const {
 definePageMeta({
     auth: false,
     layout: "login",
-    unauthenticatedOnly: true,
-    navigateAuthenticatedTo: '/'
 });
 const router = useRouter();
 
@@ -24,24 +22,33 @@ const email = ref("");
 const password = ref("");
 const name = ref("");
 const confirmPassword = ref("");
+const isLoading = ref(false);
 
 const handleSignUp = async () => {
-    if(password.value !== confirmPassword.value) {
+    if (password.value !== confirmPassword.value) {
         console.error("Passwords do not match");
         password.value = "";
         confirmPassword.value = "";
         return;
     }
+    isLoading.value = true;
     try {
-        const {error} = await useFetch('/api/auth/signup', {
-            method: 'POST',
-            body: { email: email.value, password: password.value, name: name.value },
+        const { error } = await useFetch("/api/auth/signup", {
+            method: "POST",
+            body: {
+                email: email.value,
+                password: password.value,
+                name: name.value,
+            },
         });
         if (error.value) {
             console.error("SIGNUP FAILED", error);
         } else {
             console.log("signup successful");
-            router.push({ path: '/verify-pending', query: { email: email.value } });
+            router.push({
+                path: "/verify-pending",
+                query: { email: email.value },
+            });
         }
     } catch (err) {
         console.error("An error occurred during sign-up:", err);
@@ -101,16 +108,24 @@ const handleSignUp = async () => {
         />
         <button
             type="submit"
-            class="w-full bg-pampas-600 text-white font-medium py-2 rounded-md hover:bg-pampas-900 transition"
+            class="w-full bg-navy-blue-950 text-white font-medium py-2 rounded-md hover:bg-navy-blue-900 transition"
         >
             Sign up
         </button>
         <NuxtLink to="/login">
             <button
-                class="w-full bg-white text-pampas-600 font-medium py-2 mt-4 rounded-md hover:bg-gray-300 transition border border-pampas-600"
+                class="w-full bg-white text-navy-blue-950 font-medium py-2 mt-4 rounded-md hover:bg-gray-300 transition border border-navy-blue-950"
             >
                 Go back to Login
             </button>
         </NuxtLink>
     </form>
+    <div
+        v-if="isLoading"
+        class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50"
+    >
+        <div
+            class="w-16 h-16 border-8 border-gray-300 border-t-blue-950 rounded-full animate-spin"
+        ></div>
+    </div>
 </template>

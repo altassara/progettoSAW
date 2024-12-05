@@ -1,6 +1,6 @@
 <template>
     <!--
-    <div class="grid grid-cols-5 grid-rows-5 bg-pampas-50 h-96">
+    <div class="grid grid-cols-5 grid-rows-5 bg-navy-blue-50 h-96">
         <div class="flex flex-col justify-center items-start row-span-4 border-black border-r border-b border-t-2 border-l-2 pl-10 text-l ">
             <NuxtLink>FAQ</NuxtLink>
             <NuxtLink>SHOP</NuxtLink>
@@ -11,7 +11,7 @@
             <NuxtLink>ONBOARDING</NuxtLink>
         </div>
         <div class="col-span-3 row-span-4 border-black border-t-2 border-r border-l border-b flex justify-center items-center ">
-            <NuxtLink class="font-serif text-5xl text-pampas-800">V3S</NuxtLink>
+            <NuxtLink class="font-serif text-5xl text-navy-blue-950">V3S</NuxtLink>
         </div>
         <div class="flex flex-col justify-start items-end row-span-4 col-start-5 border-black border-l border-t-2 border-r-2  pr-10 pt-10 border-b">
             <NuxtLink>SOCIAL MEDIA MANAGEMENT</NuxtLink>

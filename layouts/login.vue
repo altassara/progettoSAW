@@ -8,8 +8,12 @@
                 <slot />
             </div>
         </div>
-        <div class="hidden lg:flex col-span-3 bg-red-500">
-            <!-- Contenuto opzionale o lascia vuoto -->
+        <div class="hidden lg:flex col-span-3 bg-gray-300">
+            <img
+                src="/loginBackground.png"
+                alt="Random"
+                class="object-cover w-full h-full"
+            />
         </div>
     </div>
 </template>
