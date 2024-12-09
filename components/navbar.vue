@@ -6,63 +6,121 @@ const { data, signOut } = useAuth();
 
 // Simula il caricamento per evitare glitch visivi
 const isLoggedIn = ref(false);
+const isMenuOpen = ref(false); // Stato del menu
 
 if (data) {
     isLoggedIn.value = !!data.value?.user;
 }
+
+const toggleMenu = () => {
+    isMenuOpen.value = !isMenuOpen.value;
+};
 </script>
 
 <template>
-    <div class="my-3 flex justify-center items-center h-20 rounded-2xl py-6 w-4/5 fixed top-0 left-[10%] bg-navy-blue-900 z-10">
-        <div class="text-white flex space-x-4">
-            <nuxt-link
-                to="/"
-                class="py-2 px-4 hover:bg-navy-blue-700 rounded transition"
-                >Home</nuxt-link
-            >
-            <nuxt-link
-                to="/"
-                class="py-2 px-4 hover:bg-navy-blue-700 rounded transition"
-                >About</nuxt-link
-            >
-            <nuxt-link
-                to="/"
-                class="py-2 px-4 hover:bg-navy-blue-700 rounded transition"
-                >Services</nuxt-link
-            >
-            <nuxt-link
-                to="/"
-                class="py-2 px-4 hover:bg-navy-blue-700 rounded transition"
-                >Portfolio</nuxt-link
-            >
-            <nuxt-link
-                to="/"
-                class="py-2 px-4 hover:bg-navy-blue-700 rounded transition"
-                >Shop</nuxt-link
-            >
-            <nuxt-link
-                to="/"
-                class="py-2 px-4 hover:bg-navy-blue-700 rounded transition"
-                >Contact</nuxt-link
-            >
-            <!-- Se non loggato, mostra il pulsante Login -->
-            <nuxt-link
-                v-if="!isLoggedIn"
-                to="/login"
-                class="py-2 px-4 bg-white text-navy-blue-900 rounded hover:bg-gray-300 transition"
-                >Login</nuxt-link
-            >
-            <!-- Se loggato, mostra il nome utente e il pulsante Logout -->
-            <div v-else class="flex space-x-2 items-center">
-                <span class="py-2 px-4 bg-navy-blue-700 rounded text-sm">
-                    {{ data?.user?.name || "User" }}
-                </span>
-                <button
-                @click="() => signOut({ callbackUrl: '/login' })"
-                    class="py-2 px-4 bg-red-500 text-white rounded hover:bg-red-600 transition"
+    <div
+        class="my-3 flex flex-col items-center w-4/5 fixed top-0 left-[10%] bg-white rounded-xl z-10 transition-all"
+    >
+        <!-- Navbar principale -->
+        <div
+            class="flex justify-between items-center h-16 w-full px-6 text-navy-blue-950"
+        >
+            <!-- Logo/Scritta -->
+            <span class="text-3xl font-black">SAW</span>
+
+            <!-- Login / User Info -->
+            <div class="flex items-center space-x-4">
+                <nuxt-link
+                    v-if="!isLoggedIn"
+                    to="/login"
+                    class="py-1 px-2 font-bold text-navy-blue-950 rounded hover:bg-gray-200 transition"
                 >
-                    Sign Out
+                    Login
+                </nuxt-link>
+                <div v-else class="flex items-center space-x-1">
+                    <nuxt-link
+                        to="/"
+                        class="flex items-center py-1 px-2 font-bold rounded text-sm hover:bg-gray-200"
+                    >
+                        {{ data?.user?.name || "User" }}
+                        <IconsUser
+                            class="ml-1 w-4 h-4 inline-block font-bold text-navy-blue-950"
+                        />
+                    </nuxt-link>
+                    <button
+                        @click="() => signOut({ callbackUrl: '/login' })"
+                        class="py-1 px-2 rounded hover:bg-gray-200 transition"
+                    >
+                        <IconsSignout
+                            class="w-4 h-4 inline-block font-bold text-red-900"
+                        />
+                    </button>
+                </div>
+
+                <!-- Hamburger Icon -->
+                <button @click="toggleMenu" class="block focus:outline-none">
+                    <svg
+                        v-if="!isMenuOpen"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-6 w-6"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        stroke="currentColor"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M4 6h16M4 12h16m-7 6h7"
+                        />
+                    </svg>
+                    <svg
+                        v-else
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-6 w-6"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        stroke="currentColor"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12"
+                        />
+                    </svg>
                 </button>
+            </div>
+        </div>
+
+        <!-- Dropdown Menu -->
+        <div
+            class="overflow-hidden transition-[max-height] duration-500 ease-in w-full rounded-b-2xl"
+            :class="{ 'max-h-0': !isMenuOpen, 'max-h-96': isMenuOpen }"
+        >
+            <div
+                class="flex lg:flex-row flex-col lg:space-x-4 lg:items-center items-start py-4 ml-4 bg-white text-navy-blue-950"
+            >
+                <nuxt-link
+                    to="/"
+                    class="py-1 px-2 hover:bg-gray-200 rounded transition"
+                    >Home</nuxt-link
+                >
+                <nuxt-link
+                    to="/"
+                    class="py-1 px-2 hover:bg-gray-200 rounded transition"
+                    >About</nuxt-link
+                >
+                <nuxt-link
+                    to="/"
+                    class="py-1 px-2 hover:bg-gray-200 rounded transition"
+                    >Services</nuxt-link
+                >
+                <nuxt-link
+                    to="/"
+                    class="py-1 px-2 hover:bg-gray-200 rounded transition"
+                    >Portfolio</nuxt-link
+                >
             </div>
         </div>
     </div>

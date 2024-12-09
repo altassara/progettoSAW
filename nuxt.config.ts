@@ -24,6 +24,9 @@ export default defineNuxtConfig({
     googleFonts: {
         families: {
             Inter: "100..900",
+            "Libre+Caslon+Text": {
+                wght: [400, 700],
+            },
         },
         display: "swap",
     },

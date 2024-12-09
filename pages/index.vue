@@ -1,42 +1,22 @@
 <script setup>
-
 definePageMeta({
     auth: false,
     layout: "default",
 });
-
 </script>
 
 <template>
     <section
-        class="bg-black flex flex-col justify-center items-center min-h-screen"
+        class="bg-gray-800 bg-cover bg-center flex flex-col justify-center items-start min-h-screen"
+        style="background-image: url('/mainBackground.jpg')"
     >
-        <h1 class="text-white font-serif text-8xl">Volume Three Studios</h1>
-        <NuxtLink
-            to="/#intro"
-            class="border-white border-2 mt-4 p-4 text-white text-xl hover:bg-navy-blue-950"
-            >LEARN MORE</NuxtLink
+        <span class="lg:text-9xl text-7xl font-serif text-white ml-[10%]"
+            >ArtRate</span
         >
+        <span
+            class="text-lg -my-3 max-w-72 lg:-my-5 lg:max-w-full font-serif text-white ml-[10%] z-10"
+        >
+            Rate world's most famous paintings and share your opinion
+        </span>
     </section>
-    <div class="bg-navy-blue-50 min-h-screen flex" id="intro">
-        <div class="bg-navy-blue-400 w-2/5 h-screen">
-            <img
-                src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/old-books-in-library-shelf-luoman.jpg"
-                alt="Descrizione dell'immagine"
-                class="w-full h-full object-cover"
-            />
-        </div>
-        <div class="flex flex-col justify-center w-3/5 h-screen">
-            <h4 class="text-4xl font-serif pl-16 mb-10 max-w-5xl">
-                We Transform Your Social Media Presence Into Powerful Narratives
-                That Captivate, Resonate & AmplifyYourBrand
-            </h4>
-            <p class="font-light pl-16 text-xl max-w-5xl">
-                We don’t just manage your socials, we sculpt stories that echo
-                your brand’s essence. Elevate your digital identity with us,
-                where every post becomes a powerful chapter in your brand’s
-                success story
-            </p>
-        </div>
-    </div>
 </template>

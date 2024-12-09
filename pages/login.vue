@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useAsyncData, useAuth, useRequestHeaders } from "#imports";
+import { useAuth } from "#imports";
 
 const {
     data,
