@@ -13,7 +13,10 @@ const {
 } = useAuth();
 
 definePageMeta({
-    auth: false,
+    auth: {
+        unauthenticatedOnly: true,
+        navigateAuthenticatedTo: "/",
+    },
     layout: "login",
 });
 const router = useRouter();

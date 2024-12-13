@@ -15,10 +15,10 @@
         "@sidebase/nuxt-auth": "^0.9.4",
         "bcrypt": "^5.1.1",
         "jsonwebtoken": "^9.0.2",
+        "mongodb": "^6.12.0",
         "mongoose": "^8.8.3",
         "next-auth": "~4.21.1",
         "nodemailer": "^6.9.16",
-        "nuxt": "^3.11.2",
         "vue": "^3.4.21",
         "vue-router": "^4.3.0"
     },
@@ -26,6 +26,7 @@
         "@nuxtjs/tailwindcss": "^6.11.4",
         "@types/bcrypt": "^5.0.2",
         "@types/jsonwebtoken": "^9.0.7",
-        "@types/nodemailer": "^6.4.17"
+        "@types/nodemailer": "^6.4.17",
+        "nuxt": "^3.14.1592"
     }
 }

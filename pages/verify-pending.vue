@@ -1,6 +1,9 @@
 <script setup>
 definePageMeta({
-    auth: false,
+    auth: {
+        unauthenticatedOnly: true,
+        navigateAuthenticatedTo: "/",
+    },
     layout: "login",
 });
 const route = useRoute();

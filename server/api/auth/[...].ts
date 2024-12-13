@@ -34,28 +34,32 @@ export default NuxtAuthHandler({
                 },
             },
             async authorize(credentials: any) {
-
                 const user = await UserModel.findOne({
                     email: credentials.email,
                 });
 
+                console.log(user);
+
                 if (
                     user &&
                     credentials?.email === user.email &&
-                    await bcrypt.compare(credentials.password.toString(), user.password ?? "") &&
+                    (await bcrypt.compare(
+                        credentials.password.toString(),
+                        user.password ?? ""
+                    )) &&
                     user.verified === true
                 ) {
                     // Any object returned will be saved in `user` property of the JWT
                     return user;
                 }
-                if(user && user.verified === false) {
+                if (user && user.verified === false) {
                     console.error(
-                        "Warning: verify your email before logging in",
+                        "Warning: verify your email before logging in"
                     );
                 }
 
                 console.error(
-                    "Warning: Malicious login attempt registered, bad credentials provided",
+                    "Warning: Malicious login attempt registered, bad credentials provided"
                 );
 
                 // If you return null then an error will be displayed advising the user to check their details.
@@ -68,22 +72,24 @@ export default NuxtAuthHandler({
     pages: {
         signIn: "/login", // Percorso alla tua pagina personalizzata di login
     },
-      callbacks: {
+    callbacks: {
         async signIn({ user, account, profile }) {
-          if (account?.provider === 'github') {
-            const existingUser = await UserModel.findOne({ email: user.email });
-      
-            if (!existingUser) {
-              // Creazione di un nuovo utente nel DB
-              const newUser = new UserModel({
-                email: user.email,
-                name: user.name ?? profile?.name,
-                verified: true,
-              });
-              await newUser.save();
+            if (account?.provider === "github") {
+                const existingUser = await UserModel.findOne({
+                    email: user.email,
+                });
+
+                if (!existingUser) {
+                    // Creazione di un nuovo utente nel DB
+                    const newUser = new UserModel({
+                        email: user.email,
+                        name: user.name ?? profile?.name,
+                        verified: true,
+                    });
+                    await newUser.save();
+                }
             }
-          }
-          return true;
+            return true;
         },
         async redirect({ url, baseUrl }) {
             // Controlla se l'url richiesto è valido e non causa un ciclo

@@ -39,7 +39,7 @@ const toggleMenu = () => {
                 </nuxt-link>
                 <div v-else class="flex items-center space-x-1">
                     <nuxt-link
-                        to="/"
+                        to="/profile"
                         class="flex items-center py-1 px-2 font-bold rounded text-sm hover:bg-gray-200"
                     >
                         {{ data?.user?.name || "User" }}
