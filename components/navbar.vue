@@ -19,7 +19,7 @@ const toggleMenu = () => {
 
 <template>
     <div
-        class="my-3 flex flex-col items-center w-4/5 fixed top-0 left-[10%] bg-white rounded-xl z-10 transition-all"
+        class="my-3 flex flex-col items-center w-4/5 fixed top-0 left-[10%] bg-gray-100 rounded-xl z-10 transition-all"
     >
         <!-- Navbar principale -->
         <div
@@ -99,7 +99,7 @@ const toggleMenu = () => {
             :class="{ 'max-h-0': !isMenuOpen, 'max-h-96': isMenuOpen }"
         >
             <div
-                class="flex lg:flex-row flex-col lg:space-x-4 lg:items-center items-start py-4 ml-4 bg-white text-navy-blue-950"
+                class="flex lg:flex-row flex-col lg:space-x-4 lg:items-center items-start py-4 ml-4 bg-gray-100 text-navy-blue-950"
             >
                 <nuxt-link
                     to="/"
