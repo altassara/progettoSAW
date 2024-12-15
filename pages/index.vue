@@ -1,7 +1,16 @@
 <script setup>
+import VanillaTilt from "vanilla-tilt";
+
 definePageMeta({
     auth: false,
     layout: "default",
+});
+
+onMounted(() => {
+    VanillaTilt.init(document.querySelector("[data-tilt]"), {
+        max: 10, //default 25
+        speed: 400,
+    });
 });
 </script>
 
@@ -22,26 +31,35 @@ definePageMeta({
     <section
         class="bg-gray-200 bg-cover bg-center flex flex-col justify-center items-start min-h-screen"
     >
-        <div
-            class="w-4/5 bg-red-200 mx-auto min-h-96 grid grid-cols-10 p-5 mt-12"
-        >
+        <div class="w-4/5 mx-auto min-h-96 grid grid-cols-10 p-5 mt-12">
             <!-- due div di larghezza 5colonne ognuno -->
-            <div class="col-span-5 bg-blue-200">
-                <span class="text-3xl font-serif">Cosa è ArtRate?</span>
-                <span class="text-lg font-serif">
-                    ArtRate è un sito web che permette agli utenti di votare e
-                    commentare le opere d'arte più famose del mondo. Condividi
-                    la tua opinione e scopri cosa pensano gli altri!
+            <div
+                class="col-span-10 lg:col-span-5 bg-cover bg-center aspect-square rounded-xl"
+                style="
+                    background-image: url('/Composition2.jpg');
+                    padding-top: 100%;
+                "
+                data-tilt
+            ></div>
+            <div
+                class="col-span-10 lg:col-span-5 lg:pl-5 flex flex-col justify-start items-start gap-3"
+            >
+                <h2 class="text-5xl font-extrabold">
+                    Composition with red blue and yellow
+                </h2>
+                <div>
+                    <span class="block text-2xl font-light mt-3">
+                        Piet Mondrian
+                    </span>
+                    <span class="block text-2xl font-light"> 1930 </span>
+                </div>
+                <span class="block text-2xl mt-3 font-extralight">
+                    Join our very big and funny community and share your opinion
+                    on the world's most famous art works!
                 </span>
-            </div>
-            <div class="col-span-5 bg-green-200">
-                <span class="text-3xl font-serif">Come funziona?</span>
-                <span class="text-lg font-serif">
-                    ArtRate ti permette di votare le opere d'arte più famose del
-                    mondo. Dopo aver votato, potrai vedere la media dei voti
-                    degli altri utenti e leggere i loro commenti. Se vuoi
-                    partecipare, registrati e inizia a votare!
-                </span>
+                <CommentCard />
+                <CommentCard />
+                <CommentCard />
             </div>
         </div>
     </section>

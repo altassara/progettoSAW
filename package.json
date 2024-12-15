@@ -19,14 +19,22 @@
         "mongoose": "^8.8.3",
         "next-auth": "~4.21.1",
         "nodemailer": "^6.9.16",
+        "vanilla-tilt": "^1.8.1",
         "vue": "^3.4.21",
         "vue-router": "^4.3.0"
     },
     "devDependencies": {
         "@nuxtjs/tailwindcss": "^6.11.4",
         "@types/bcrypt": "^5.0.2",
+        "@types/estree": "^1.0.6",
+        "@types/http-proxy": "^1.17.15",
         "@types/jsonwebtoken": "^9.0.7",
+        "@types/node": "^22.10.2",
         "@types/nodemailer": "^6.4.17",
+        "@types/resolve": "^1.20.6",
+        "@types/web-bluetooth": "^0.0.20",
+        "@types/webidl-conversions": "^7.0.3",
+        "@types/whatwg-url": "^13.0.0",
         "nuxt": "^3.14.1592"
     }
 }
