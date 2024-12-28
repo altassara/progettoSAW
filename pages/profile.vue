@@ -1,32 +1,63 @@
 <script setup>
-import { ref, onMounted, watch } from "vue";
-const { data: authData } = useAuth(); // Ottieni i dati dell'utente autenticato
+import { ref, computed } from "vue";
 
+const { data: authData, getSession } = useAuth();
 const sessionData = toRef(authData, "user");
 
 const userData = ref(sessionData.value.user);
-const error = ref(null); // Errore, se presente
-const loading = ref(false); // Stato di caricamento
-const prova = ref("caa");
+const error = ref("");
+const successMessage = ref(null);
+const loading = ref(false);
 
-console.log("User email:", userData.value);
+// Computed property per formattare la data
+const formattedDateOfBirth = computed({
+    get() {
+        return userData.value.dateOfBirth
+            ? new Date(userData.value.dateOfBirth).toISOString().split("T")[0]
+            : "";
+    },
+    set(value) {
+        userData.value.dateOfBirth = new Date(value).toISOString();
+    },
+});
 
-const fetchUserData = async () => {
+try {
+    const { data } = await useFetch(`/api/protected/user`, {
+        method: "GET",
+        params: {
+            email: userData.value.email,
+        },
+    });
+    userData.value = data.value;
+} catch (err) {
+    console.error("An error occurred during fetching user data:", err);
+    error.value = err.message;
+}
+
+const handleUpdateUser = async () => {
     try {
-        const { data } = await useFetch(`/api/protected/user`, {
-            method: "GET",
-            params: {
-                email: userData.value.email, // Passa l'email dell'utente autenticato
-            },
+        loading.value = true;
+        await $fetch(`/api/protected/user`, {
+            method: "PUT",
+            body: { userUpdated: userData.value },
         });
-        console.log("User data fetched:", data.value);
+        successMessage.value = "User updated successfully!";
+        error.value = null;
+        loading.value = false;
+        setTimeout(() => {
+            successMessage.value = null;
+        }, 2500);
     } catch (err) {
-        console.error("An error occurred during fetching user data:", err);
+        console.error("An error occurred during updating user data:", err);
         error.value = err.message;
+        successMessage.value = null;
+        loading.value = false;
+        setTimeout(() => {
+            error.value = null;
+        }, 2500);
     }
+    getSession();
 };
-
-onMounted(fetchUserData);
 </script>
 
 <template>
@@ -42,8 +73,19 @@ onMounted(fetchUserData);
             />
         </div>
 
-        <!-- Colonne per i dettagli dell'utente -->
         <div class="col-span-7">
+            <UAlert
+                v-if="successMessage"
+                class="bg-green-100 text-green-700 p-2 rounded mb-4"
+                icon="i-heroicons-command-line"
+                variant="soft"
+                title="Updated!"
+                :description="successMessage"
+            />
+            <div v-if="error" class="bg-red-100 text-red-700 p-2 rounded mb-4">
+                {{ error }}
+            </div>
+
             <!-- Email -->
             <div class="mb-4">
                 <p class="font-extrabold text-2xl xl:text-4xl">
@@ -51,8 +93,10 @@ onMounted(fetchUserData);
                 </p>
             </div>
 
-            <!-- Form per i dati dell'utente -->
-            <form class="grid grid-cols-2 gap-4">
+            <form
+                class="grid grid-cols-2 gap-4"
+                @submit.prevent="handleUpdateUser"
+            >
                 <!-- Campo Nome -->
                 <div class="col-span-1">
                     <label
@@ -75,7 +119,7 @@ onMounted(fetchUserData);
                 <!-- Campo Cognome -->
                 <div class="col-span-1">
                     <label
-                        for="name"
+                        for="surname"
                         class="block text-xs font-extralight text-gray-700"
                         >Surname</label
                     >
@@ -87,32 +131,31 @@ onMounted(fetchUserData);
                         placeholder="surname"
                         size="lg"
                         class="w-full rounded-md"
-                        required
                     />
                 </div>
 
-                <!-- Campo Telefono -->
+                <!-- Campo Data di nascita -->
                 <div class="col-span-1">
                     <label
-                        for="name"
+                        for="dateOfBirth"
                         class="block text-xs font-extralight text-gray-700"
                         >Date of birth</label
                     >
                     <UInput
                         type="date"
-                        v-model="userData.dateOfBirth"
+                        v-model="formattedDateOfBirth"
                         color="white"
                         variant="outline"
-                        placeholder="Password"
+                        placeholder="Date of Birth"
                         size="lg"
                         class="w-full rounded-md"
-                        required
                     />
                 </div>
 
+                <!-- Campo Password -->
                 <div class="col-span-1">
                     <label
-                        for="name"
+                        for="password"
                         class="block text-xs font-extralight text-gray-700"
                         >Password</label
                     >
@@ -124,7 +167,7 @@ onMounted(fetchUserData);
                         placeholder="Password"
                         size="lg"
                         class="w-full rounded-md"
-                        required
+                        disabled
                     />
                 </div>
 
@@ -137,6 +180,8 @@ onMounted(fetchUserData);
                         Conferma
                     </button>
                 </div>
+
+                <!-- Bottone di reset -->
                 <div class="col-span-1">
                     <button
                         class="w-full bg-white text-red-900 font-medium py-2 rounded-md hover:bg-gray-300 transition border border-red-900"

@@ -1,8 +1,13 @@
 import { UserModel } from "~/server/models/user";
 
 export default eventHandler(async (event) => {
-    const { email } = getQuery(event);
-    const user = await UserModel.findOne({ email });
+    const { userUpdated } = await readBody(event);
+
+    const user = await UserModel.findOneAndUpdate(
+        { email: userUpdated.email },
+        userUpdated,
+        { new: true }
+    );
 
     if (!user) {
         throw createError({ statusMessage: "Not found", statusCode: 404 });

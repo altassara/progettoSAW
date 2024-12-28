@@ -42,7 +42,7 @@ const toggleMenu = () => {
                         to="/profile"
                         class="flex items-center py-1 px-2 font-bold rounded text-sm hover:bg-gray-200"
                     >
-                        {{ data?.user?.name || "User" }}
+                        {{ data?.user?.email || "User" }}
                         <IconsUser
                             class="ml-1 w-4 h-4 inline-block font-bold text-navy-blue-950"
                         />
