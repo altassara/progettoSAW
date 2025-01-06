@@ -8,6 +8,29 @@ const userData = ref(sessionData.value.user);
 const error = ref("");
 const successMessage = ref(null);
 const loading = ref(false);
+const isModalOpen = ref(false);
+const imageSrc = ref(""); // Sorgente immagine caricata
+
+const openModal = () => {
+    isModalOpen.value = true;
+};
+
+const closeModal = () => {
+    isModalOpen.value = false;
+};
+
+const uploadImage = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        imageSrc.value = URL.createObjectURL(file);
+        closeModal();
+    }
+};
+
+const deleteImage = () => {
+    imageSrc.value = "";
+    closeModal();
+};
 
 // Computed property per formattare la data
 const formattedDateOfBirth = computed({
@@ -65,26 +88,53 @@ const handleUpdateUser = async () => {
         class="bg-white mt-24 w-4/5 mx-auto p-6 rounded-lg grid grid-cols-10 gap-4"
     >
         <!-- Colonna della foto profilo -->
-        <div class="col-span-3 flex justify-center items-center">
+        <div
+            class="border-2 border-gray-300 rounded-lg col-span-10 lg:col-span-3 flex justify-center items-center w-full aspect-w-1 aspect-h-1"
+        >
             <img
-                src=""
+                :src="imageSrc || ''"
                 alt="Profile"
-                class="border-2 border-gray-300 w-full h-full rounded-lg"
+                class="max-w-full max-h-full cursor-pointer"
+                @click="openModal"
             />
         </div>
 
-        <div class="col-span-7">
-            <UAlert
-                v-if="successMessage"
-                class="bg-green-100 text-green-700 p-2 rounded mb-4"
-                icon="i-heroicons-command-line"
-                variant="soft"
-                title="Updated!"
-                :description="successMessage"
-            />
-            <div v-if="error" class="bg-red-100 text-red-700 p-2 rounded mb-4">
-                {{ error }}
-            </div>
+        <div class="col-span-10 lg:col-span-7">
+            <transition
+                name="fade"
+                enter-active-class="transition-opacity duration-500"
+                leave-active-class="transition-opacity duration-500"
+                enter-from-class="opacity-0"
+                enter-to-class="opacity-100"
+                leave-from-class="opacity-100"
+                leave-to-class="opacity-0"
+            >
+                <UAlert
+                    v-if="successMessage"
+                    class="bg-green-100 text-green-700 p-2 rounded mb-4"
+                    icon="i-heroicons-command-line"
+                    variant="soft"
+                    title="Updated!"
+                    :description="successMessage"
+                />
+            </transition>
+
+            <transition
+                name="fade"
+                enter-active-class="transition-opacity duration-500"
+                leave-active-class="transition-opacity duration-500"
+                enter-from-class="opacity-0"
+                enter-to-class="opacity-100"
+                leave-from-class="opacity-100"
+                leave-to-class="opacity-0"
+            >
+                <div
+                    v-if="error"
+                    class="bg-red-100 text-red-700 p-2 rounded mb-4"
+                >
+                    {{ error }}
+                </div>
+            </transition>
 
             <!-- Email -->
             <div class="mb-4">
@@ -192,4 +242,65 @@ const handleUpdateUser = async () => {
             </form>
         </div>
     </div>
+    <!-- Modal -->
+    <transition
+        name="fade"
+        enter-active-class="transition-opacity duration-500"
+        leave-active-class="transition-opacity duration-500"
+        enter-from-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+    >
+        <div
+            v-if="isModalOpen"
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+        >
+            <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+                <h2 class="text-xl font-bold mb-4">Gestisci Immagine</h2>
+                <div class="flex gap-4 items-center mb-4">
+                    <!-- Contenitore immagine -->
+                    <div
+                        class="border-2 border-gray-300 rounded-lg w-40 h-40 flex justify-center items-center"
+                    >
+                        <img
+                            :src="imageSrc || ''"
+                            alt="Profile"
+                            class="max-w-full max-h-full cursor-pointer"
+                        />
+                    </div>
+
+                    <!-- Bottoni Carica ed Elimina immagine affiancati -->
+                    <div class="flex flex-col gap-2 w-auto flex-grow">
+                        <!-- Bottone per caricare immagine -->
+                        <label
+                            class="w-full bg-navy-blue-950 text-white font-medium py-2 rounded-md hover:bg-navy-blue-900 transition text-center"
+                        >
+                            Carica Immagine
+                            <input
+                                type="file"
+                                accept="image/*"
+                                class="hidden"
+                                @change="uploadImage"
+                            />
+                        </label>
+
+                        <!-- Bottone per eliminare immagine -->
+                        <button
+                            @click="deleteImage"
+                            class="w-full bg-white text-red-900 font-medium py-2 rounded-md hover:bg-gray-300 transition border border-red-900"
+                        >
+                            Elimina Immagine
+                        </button>
+                    </div>
+                </div>
+                <button
+                    @click="closeModal"
+                    class="mt-4 bg-gray-300 text-gray-700 px-4 py-2 rounded"
+                >
+                    Chiudi
+                </button>
+            </div>
+        </div>
+    </transition>
 </template>

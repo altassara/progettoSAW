@@ -26,7 +26,7 @@ const toggleMenu = () => {
             class="flex justify-between items-center h-16 w-full px-6 text-navy-blue-950"
         >
             <!-- Logo/Scritta -->
-            <span class="text-3xl font-black">SAW</span>
+            <nuxt-link to="/" class="text-3xl font-black">SAW</nuxt-link>
 
             <!-- Login / User Info -->
             <div class="flex items-center space-x-4">
@@ -42,7 +42,9 @@ const toggleMenu = () => {
                         to="/profile"
                         class="flex items-center py-1 px-2 font-bold rounded text-sm hover:bg-gray-200"
                     >
-                        {{ data?.user?.email || "User" }}
+                        <span class="hidden lg:block">
+                            {{ data?.user?.email || "User" }}
+                        </span>
                         <IconsUser
                             class="ml-1 w-4 h-4 inline-block font-bold text-navy-blue-950"
                         />
