@@ -26,17 +26,18 @@ const password = ref("");
 const name = ref("");
 const confirmPassword = ref("");
 const isLoading = ref(false);
+const alertMessage = ref(""); // Stato per il messaggio dell'alert
 
 const handleSignUp = async () => {
     if (password.value !== confirmPassword.value) {
-        console.error("Passwords do not match");
+        alertMessage.value = "Passwords do not match";
         password.value = "";
         confirmPassword.value = "";
         return;
     }
     isLoading.value = true;
     try {
-        const { error } = await useFetch("/api/auth/signup", {
+        const { data, error } = await useFetch("/api/auth/signup", {
             method: "POST",
             body: {
                 email: email.value,
@@ -45,7 +46,10 @@ const handleSignUp = async () => {
             },
         });
         if (error.value) {
-            console.error("SIGNUP FAILED", error);
+            // Controlla se l'errore riguarda l'email già in uso
+            alertMessage.value = "An error occurred. Please try again.";
+
+            isLoading.value = false;
         } else {
             router.push({
                 path: "/verify-pending",
@@ -54,6 +58,9 @@ const handleSignUp = async () => {
         }
     } catch (err) {
         console.error("An error occurred during sign-up:", err);
+        alertMessage.value = "An unexpected error occurred.";
+    } finally {
+        isLoading.value = false;
     }
 };
 </script>
@@ -67,6 +74,24 @@ const handleSignUp = async () => {
     >
         Sign Up
     </h1>
+    <!-- UAlert -->
+    <div
+        v-if="alertMessage"
+        class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-4/5 md:w-1/2"
+    >
+        <UAlert
+            color="red"
+            class="text-center"
+            :close-button="{
+                icon: 'i-heroicons-x-mark-20-solid',
+                color: 'white',
+                variant: 'link',
+                padded: false,
+            }"
+            :title="alertMessage"
+        >
+        </UAlert>
+    </div>
     <form @submit.prevent="handleSignUp" class="space-y-4">
         <UInput
             type="text"
