@@ -85,11 +85,11 @@ const handleUpdateUser = async () => {
 
 <template>
     <div
-        class="bg-white mt-24 w-4/5 mx-auto p-6 rounded-lg grid grid-cols-10 gap-4"
+        class="bg-white mt-24 w-4/5 mx-auto p-6 rounded-xl grid grid-cols-10 gap-4"
     >
         <!-- Colonna della foto profilo -->
         <div
-            class="border-2 border-gray-300 rounded-lg col-span-10 lg:col-span-3 flex justify-center items-center w-full aspect-w-1 aspect-h-1"
+            class="border-2 border-gray-300 rounded-xl col-span-10 lg:col-span-3 flex justify-center items-center w-full aspect-w-1 aspect-h-1"
         >
             <img
                 :src="imageSrc || ''"
@@ -256,12 +256,12 @@ const handleUpdateUser = async () => {
             v-if="isModalOpen"
             class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
         >
-            <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+            <div class="bg-white p-6 rounded-xl shadow-lg max-w-md w-full">
                 <h2 class="text-xl font-bold mb-4">Gestisci Immagine</h2>
                 <div class="flex gap-4 items-center mb-4">
                     <!-- Contenitore immagine -->
                     <div
-                        class="border-2 border-gray-300 rounded-lg w-40 h-40 flex justify-center items-center"
+                        class="border-2 border-gray-300 rounded-xl w-40 h-40 flex justify-center items-center"
                     >
                         <img
                             :src="imageSrc || ''"

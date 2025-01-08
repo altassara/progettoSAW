@@ -38,7 +38,7 @@ const getRatingColor = computed(() => {
             <div
                 class="col-span-10 lg:col-span-5 bg-cover bg-center aspect-square rounded-xl"
                 :style="{
-                    backgroundImage: `url(${painting.imageUrl})`,
+                    backgroundImage: `url(${painting?.imageUrl})`,
                     paddingTop: '100%',
                 }"
                 data-tilt
@@ -47,18 +47,18 @@ const getRatingColor = computed(() => {
                 class="col-span-10 lg:col-span-5 lg:pl-5 flex flex-col justify-start items-start gap-1"
             >
                 <h2 class="text-5xl font-extrabold">
-                    {{ painting.title }}
+                    {{ painting.title ?? "" }}
                 </h2>
                 <div>
                     <span class="block text-2xl font-light mt-3">
-                        {{ painting.artist }}
+                        {{ painting.artist ?? "" }}
                     </span>
                     <span class="block text-2xl font-light">
-                        {{ painting.year }}
+                        {{ painting.year ?? "" }}
                     </span>
                 </div>
                 <span class="block text-xl font-extralight">
-                    {{ painting.description }}
+                    {{ painting.description ?? "" }}
                 </span>
                 <span class="block text-2xl font-bold">
                     <span class="font-light text-xl">Average grade: </span>
