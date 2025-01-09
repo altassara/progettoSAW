@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken";
 connectDB();
 
 export default defineEventHandler(async (event) => {
-    const { email, password, name } = await readBody(event);
+    const { email, password, firstname, lastname } = await readBody(event);
     const existingUser = await UserModel.findOne({ email });
     if (existingUser) {
         throw createError({
@@ -20,10 +20,11 @@ export default defineEventHandler(async (event) => {
 
     // Creazione dell'utente
     const newUser = new UserModel({
-        name: name,
+        name: firstname,
+        surname: lastname,
         email: email,
         password: hashedPassword,
-        verified: false,
+        verified: true, // false per attivare la verifica con email
     });
 
     await newUser.save();

@@ -45,6 +45,19 @@ const handleSearch = async () => {
     });
     paintings.value = data;
 };
+
+const { data } = await useFetch("/api/protected/painting/search", {
+    method: "GET",
+    params: {
+        title: query.value.title,
+        artist: query.value.artist,
+        yearFrom: query.value.yearFrom,
+        yearTo: query.value.yearTo,
+        category: query.value.category,
+        maxPainting: query.value.maxPaintings,
+    },
+});
+paintings.value = data.value;
 </script>
 <template>
     <div class="mt-24 w-4/5 mx-auto p-0 rounded-xl grid grid-cols-4 gap-4 mb-8">

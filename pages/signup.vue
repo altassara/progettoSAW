@@ -24,6 +24,7 @@ const router = useRouter();
 const email = ref("");
 const password = ref("");
 const name = ref("");
+const surname = ref("");
 const confirmPassword = ref("");
 const isLoading = ref(false);
 const alertMessage = ref(""); // Stato per il messaggio dell'alert
@@ -42,7 +43,8 @@ const handleSignUp = async () => {
             body: {
                 email: email.value,
                 password: password.value,
-                name: name.value,
+                firstname: name.value,
+                lastname: surname.value,
             },
         });
         if (error.value) {
@@ -99,6 +101,16 @@ const handleSignUp = async () => {
             color="white"
             variant="outline"
             placeholder="Name"
+            size="lg"
+            class="w-full rounded-md"
+            required
+        />
+        <UInput
+            type="text"
+            v-model="surname"
+            color="white"
+            variant="outline"
+            placeholder="Surname"
             size="lg"
             class="w-full rounded-md"
             required
