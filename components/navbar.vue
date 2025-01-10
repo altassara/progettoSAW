@@ -109,9 +109,9 @@ const toggleMenu = () => {
                     >Home</nuxt-link
                 >
                 <nuxt-link
-                    to="/"
+                    to="/search"
                     class="py-1 px-2 hover:bg-gray-200 rounded transition"
-                    >About</nuxt-link
+                    >Search</nuxt-link
                 >
                 <nuxt-link
                     to="/"

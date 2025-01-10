@@ -57,9 +57,6 @@ onMounted(() => {
                     Join our very big and funny community and share your opinion
                     on the world's most famous art works!
                 </span>
-                <CommentCard />
-                <CommentCard />
-                <CommentCard />
             </div>
         </div>
     </section>

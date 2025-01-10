@@ -5,7 +5,7 @@ const query = ref({
     yearFrom: "",
     yearTo: "",
     category: "",
-    maxPaintings: 10,
+    maxPaintings: 50,
 });
 
 const paintings = ref([]);
@@ -44,6 +44,17 @@ const handleSearch = async () => {
         },
     });
     paintings.value = data;
+};
+
+const resetFilters = () => {
+    query.value.title = "";
+    query.value.artist = "";
+    query.value.yearFrom = "";
+    query.value.yearTo = "";
+    query.value.category = "";
+    query.value.maxPaintings = 50;
+
+    handleSearch();
 };
 
 const { data } = await useFetch("/api/protected/painting/search", {
@@ -95,9 +106,9 @@ paintings.value = data.value;
         </div>
         <h3 class="font-extrabold text-xl block col-span-4">Filters:</h3>
         <div
-            class="bg-white w-full p-5 rounded-xl grid grid-cols-4 gap-12 col-span-4 items-center"
+            class="bg-white w-full p-5 rounded-xl grid grid-cols-6 gap-8 col-span-4 items-center"
         >
-            <div class="lg:col-span-2 col-span-4 grid grid-cols-3 gap-4">
+            <div class="lg:col-span-3 col-span-6 grid grid-cols-3 gap-4">
                 <UInput
                     class="lg:col-span-1 col-span-3 h-full"
                     v-model="query.yearFrom"
@@ -130,7 +141,7 @@ paintings.value = data.value;
             </div>
             <!-- Go Button -->
             <div
-                class="lg:col-span-1 col-span-4 lg:col-end-5 flex items-center"
+                class="lg:col-span-1 col-span-6 lg:col-end-6 flex items-center"
             >
                 <button
                     type="submit"
@@ -138,6 +149,17 @@ paintings.value = data.value;
                     @click="handleSearch"
                 >
                     Go
+                </button>
+            </div>
+            <div
+                class="lg:col-span-1 col-span-6 lg:col-end-7 flex items-center"
+            >
+                <button
+                    type="submit"
+                    class="w-full bg-white text-red-900 text-xs font-medium py-2 rounded-md hover:bg-gray-300 transition border border-red-900"
+                    @click="resetFilters"
+                >
+                    Reset
                 </button>
             </div>
         </div>

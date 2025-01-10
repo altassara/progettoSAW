@@ -7,7 +7,7 @@ export default eventHandler(async (event) => {
         yearFrom,
         yearTo,
         category,
-        maxPaintings = 10,
+        maxPaintings = 50,
     } = getQuery(event);
 
     const query = {} as any;
