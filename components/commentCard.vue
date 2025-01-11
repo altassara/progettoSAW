@@ -5,6 +5,15 @@ defineProps({
         required: true,
     },
 });
+
+// Funzione per formattare la data in formato DD-MM-YYYY
+const formatDate = (date) => {
+    const d = new Date(date);
+    const day = String(d.getDate()).padStart(2, "0"); // Aggiunge uno zero se il giorno è < 10
+    const month = String(d.getMonth() + 1).padStart(2, "0"); // Mese inizia da 0, quindi aggiungi 1
+    const year = d.getFullYear();
+    return `${day}-${month}-${year}`;
+};
 </script>
 
 <template>
@@ -14,7 +23,7 @@ defineProps({
         <div class="flex justify-between items-start">
             <div class="flex items-center gap-3">
                 <img
-                    src="/profilePictureStock.jpg"
+                    :src="review.user.image || '/profilePictureStock.jpg'"
                     alt="Foto utente"
                     class="w-12 h-12 rounded-full object-cover"
                 />
@@ -22,13 +31,11 @@ defineProps({
                     <p class="text-lg font-semibold text-gray-800">
                         {{ review.user.email }}
                     </p>
-                    <p class="text-sm text-gray-500">{{ review.updatedAt }}</p>
+                    <p class="text-sm text-gray-500">
+                        {{ formatDate(review.updatedAt) }}
+                    </p>
                 </div>
             </div>
-            <!-- <div class="flex items-center justify-center gap-1"> -->
-            <!--     <span class="text-sm font-extralight">1.2k</span> -->
-            <!--     <IconsHeart class="w-7 h-7 text-yellow-400" /> -->
-            <!-- </div> -->
         </div>
 
         <div class="flex justify-between items-center">

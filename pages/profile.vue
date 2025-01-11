@@ -10,6 +10,7 @@ const successMessage = ref(null);
 const loading = ref(false);
 const isModalOpen = ref(false);
 const imageSrc = ref(""); // Sorgente immagine caricata
+const image = ref(null);
 
 const openModal = () => {
     isModalOpen.value = true;
@@ -23,12 +24,35 @@ const uploadImage = (event) => {
     const file = event.target.files[0];
     if (file) {
         imageSrc.value = URL.createObjectURL(file);
+        image.value = file;
+    }
+};
+
+const sendImage = async () => {
+    try {
+        const formData = new FormData();
+        formData.append("image", image.value);
+        formData.append("email", userData.value.email);
+        await useFetch(`/api/protected/user/uploadImage`, {
+            method: "PUT",
+            body: formData,
+        });
+        successMessage.value = "Image uploaded successfully!";
+        error.value = null;
         closeModal();
+    } catch (err) {
+        console.error("An error occurred during uploading image:", err);
+        error.value = err.message;
+        successMessage.value = null;
+        setTimeout(() => {
+            error.value = null;
+        }, 2500);
     }
 };
 
 const deleteImage = () => {
     imageSrc.value = "";
+    image.value = null;
     closeModal();
 };
 
@@ -92,7 +116,7 @@ const handleUpdateUser = async () => {
             class="border-2 border-gray-300 rounded-xl col-span-10 lg:col-span-3 flex justify-center items-center w-full aspect-w-1 aspect-h-1"
         >
             <img
-                :src="imageSrc || ''"
+                :src="imageSrc || userData.image"
                 alt="Profile"
                 class="max-w-full max-h-full cursor-pointer"
                 @click="openModal"
@@ -260,28 +284,35 @@ const handleUpdateUser = async () => {
                 <h2 class="text-xl font-bold mb-4">Gestisci Immagine</h2>
                 <div class="flex gap-4 items-center mb-4">
                     <!-- Contenitore immagine -->
-                    <div
-                        class="border-2 border-gray-300 rounded-xl w-40 h-40 flex justify-center items-center"
-                    >
-                        <img
-                            :src="imageSrc || ''"
-                            alt="Profile"
-                            class="max-w-full max-h-full cursor-pointer"
-                        />
-                    </div>
+                    <label>
+                        <div
+                            class="border-2 border-gray-300 rounded-xl w-40 h-40 flex justify-center items-center"
+                        >
+                            <img
+                                :src="imageSrc || userData.image"
+                                alt="Profile"
+                                class="max-w-full max-h-full cursor-pointer"
+                            />
 
+                            <input
+                                type="file"
+                                accept="image/*"
+                                class="hidden"
+                                @change="uploadImage"
+                            />
+                        </div>
+                    </label>
                     <!-- Bottoni Carica ed Elimina immagine affiancati -->
                     <div class="flex flex-col gap-2 w-auto flex-grow">
                         <!-- Bottone per caricare immagine -->
                         <label
                             class="w-full bg-navy-blue-950 text-white font-medium py-2 rounded-md hover:bg-navy-blue-900 transition text-center"
                         >
-                            Carica Immagine
+                            Conferma
                             <input
-                                type="file"
-                                accept="image/*"
+                                type="submit"
                                 class="hidden"
-                                @change="uploadImage"
+                                @click="sendImage"
                             />
                         </label>
 
