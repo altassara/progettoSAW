@@ -1,6 +1,7 @@
 import { ReviewModel } from "~/server/models/review";
 import { PaintingModel } from "~/server/models/painting";
 import { UserModel } from "~/server/models/user";
+import { getToken } from "#auth";
 
 export default eventHandler(async (event) => {
     const { painting, user, rating, description } = await readBody(event);
@@ -10,6 +11,15 @@ export default eventHandler(async (event) => {
         throw createError({
             statusCode: 404,
             message: "Painting not found.",
+        });
+    }
+
+    const token = await getToken({ event });
+
+    if (user !== token?.email) {
+        throw createError({
+            statusCode: 403,
+            message: "Forbidden",
         });
     }
 

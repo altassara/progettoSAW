@@ -1,7 +1,13 @@
 import { UserModel } from "~/server/models/user";
+import { getToken } from "#auth";
 
 export default eventHandler(async (event) => {
     const { userUpdated } = await readBody(event);
+    const token = await getToken({ event });
+
+    if (userUpdated.email !== token?.email) {
+        throw createError({ statusMessage: "Forbidden", statusCode: 403 });
+    }
 
     const user = await UserModel.findOneAndUpdate(
         { email: userUpdated.email },

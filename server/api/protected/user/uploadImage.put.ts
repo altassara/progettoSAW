@@ -2,6 +2,7 @@ import { UserModel } from "~/server/models/user";
 import fs from "fs";
 import path from "path";
 import { IncomingForm } from "formidable";
+import { getToken } from "#auth";
 
 export default eventHandler(async (event) => {
     const form = new IncomingForm();
@@ -18,8 +19,20 @@ export default eventHandler(async (event) => {
         }
 
         // Ottieni l'email e il file immagine dal body
-        const { email } = fields;
+        const { email } = fields as unknown as { email: string };
         const file = files?.image ? files.image[0] : undefined;
+
+        const token = await getToken({ event });
+
+        if (email[0] !== token?.email) {
+            return sendError(
+                event,
+                createError({
+                    statusCode: 403,
+                    message: "Forbidden",
+                })
+            );
+        }
 
         // Verifica che l'email e il file siano presenti
         if (!email || !file) {
