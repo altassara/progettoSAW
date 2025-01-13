@@ -1,10 +1,31 @@
+import Joi from "joi";
 import { ReviewModel } from "~/server/models/review";
 import { PaintingModel } from "~/server/models/painting";
 import { UserModel } from "~/server/models/user";
 import { getToken } from "#auth";
 
+const reviewSchema = Joi.object({
+    painting: Joi.string().required(),
+    user: Joi.string().email().required(),
+    rating: Joi.number().integer().min(1).max(10).required(),
+    description: Joi.string().optional(),
+});
+
 export default eventHandler(async (event) => {
     const { painting, user, rating, description } = await readBody(event);
+    const { error } = reviewSchema.validate({
+        painting,
+        user,
+        rating,
+        description,
+    });
+
+    if (error) {
+        throw createError({
+            statusCode: 400,
+            message: `Validation Error: ${error.details[0].message}`,
+        });
+    }
 
     const paintingDoc = await PaintingModel.findOne({ title: painting });
     if (!paintingDoc) {
@@ -43,8 +64,8 @@ export default eventHandler(async (event) => {
     }
 
     const newReview = new ReviewModel({
-        painting: paintingDoc._id, // uso l'ID del quadro
-        user: userDoc._id, // uso l'ID dell'utente
+        painting: paintingDoc._id,
+        user: userDoc._id,
         rating,
         description,
     });
