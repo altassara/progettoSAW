@@ -18,7 +18,7 @@ const checkVerification = async () => {
         });
 
         if (response.verified === true) {
-            router.push("/login"); // Redirigi alla pagina di login dopo la verifica
+            router.push("/login");
         }
     } catch (error) {
         console.error("Error checking verification status:", error);
@@ -29,7 +29,6 @@ const checkVerification = async () => {
 onMounted(() => {
     const intervalId = setInterval(checkVerification, 5000);
 
-    // Pulisci l'intervallo quando il componente viene distrutto
     onUnmounted(() => {
         clearInterval(intervalId);
     });

@@ -18,7 +18,6 @@ export default eventHandler(async (event) => {
             );
         }
 
-        // Ottieni l'email e il file immagine dal body
         const { email } = fields as unknown as { email: string };
         const file = files?.image ? files.image[0] : undefined;
 
@@ -48,16 +47,13 @@ export default eventHandler(async (event) => {
         const ext = path.extname(file.originalFilename || "");
         const newFileName = `${email}${ext}`; // Nome file: email.estensione
 
-        // Percorso di salvataggio
         const uploadDir = path.join(process.cwd(), "public", "profileImages");
         const filePath = path.join(uploadDir, newFileName);
 
-        // Assicurati che la cartella esista
         if (!fs.existsSync(uploadDir)) {
             fs.mkdirSync(uploadDir, { recursive: true });
         }
 
-        // Rimuovi qualsiasi file esistente con lo stesso nome dell'email (indipendentemente dall'estensione)
         const filesInDir = fs.readdirSync(uploadDir);
         filesInDir.forEach((existingFile) => {
             const fileBaseName = path.basename(
@@ -74,16 +70,14 @@ export default eventHandler(async (event) => {
             }
         });
 
-        // Sposta il nuovo file nella directory di destinazione
         fs.renameSync(file.filepath, filePath);
 
-        // Aggiorna l'utente nel database con il nuovo URL dell'immagine
         const imageUrl = `/profileImages/${newFileName}`;
         try {
             const user = await UserModel.findOneAndUpdate(
                 { email },
-                { $set: { image: imageUrl } }, // Usa $set per aggiornare solo il campo image
-                { new: true } // Restituisce il documento aggiornato
+                { $set: { image: imageUrl } },
+                { new: true }
             );
 
             if (!user) {
@@ -93,7 +87,6 @@ export default eventHandler(async (event) => {
                 );
             }
 
-            // Rispondi con l'URL dell'immagine
             return send(event, { imageUrl });
         } catch (error) {
             return sendError(

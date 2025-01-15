@@ -45,13 +45,13 @@ try {
 }
 
 const getRatingColor = computed(() => {
-    if (!averageVote.value) return "rgb(255, 0, 0)"; // Default: Rosso se rating non è definito
+    if (!averageVote.value) return "rgb(255, 0, 0)";
 
     const rating = averageVote.value;
     const maxColorValue = 200;
     const red = Math.round(maxColorValue - (rating / 10) * maxColorValue); // Più alto il rating, meno rosso
     const green = Math.round((rating / 10) * maxColorValue); // Più alto il rating, più verde
-    return `rgb(${red}, ${green}, 0)`; // Colore dinamico
+    return `rgb(${red}, ${green}, 0)`;
 });
 
 const openModal = () => {
@@ -91,6 +91,13 @@ const submitReview = async () => {
         console.error("An error occurred during submitting review:", err);
     }
 };
+
+onMounted(() => {
+    VanillaTilt.init(document.querySelector("[data-tilt]"), {
+        max: 10, //default 25
+        speed: 400,
+    });
+});
 </script>
 
 <template>
@@ -100,7 +107,6 @@ const submitReview = async () => {
         <div
             class="w-4/5 mx-auto min-h-96 grid grid-cols-10 p-5 mt-24 2xl:mt-0"
         >
-            <!-- due div di larghezza 5colonne ognuno -->
             <div
                 class="col-span-10 lg:col-span-5 bg-cover bg-center aspect-square rounded-xl"
                 :style="{

@@ -18,7 +18,6 @@ defineProps({
     >
         <NuxtLink :to="`/painting/${painting.slug}`">
             <div class="absolute inset-0 flex justify-center items-end">
-                <!-- Contenuto dentro il quadrato -->
                 <div
                     class="bg-gray-200 w-full m-4 p-2 rounded-xl bg-opacity-90"
                 >

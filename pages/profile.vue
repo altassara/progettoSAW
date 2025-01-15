@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
 
-const { data: authData, getSession } = useAuth();
+const { data: authData, getSession, signOut } = useAuth();
 const sessionData = toRef(authData, "user");
 
 const userData = ref(sessionData.value.user);
@@ -258,9 +258,10 @@ const handleUpdateUser = async () => {
                 <!-- Bottone di reset -->
                 <div class="col-span-1">
                     <button
+                        @click="() => signOut({ callbackUrl: '/login' })"
                         class="w-full bg-white text-red-900 font-medium py-2 rounded-md hover:bg-gray-300 transition border border-red-900"
                     >
-                        Reset
+                        SignOut
                     </button>
                 </div>
             </form>
@@ -302,9 +303,7 @@ const handleUpdateUser = async () => {
                             />
                         </div>
                     </label>
-                    <!-- Bottoni Carica ed Elimina immagine affiancati -->
                     <div class="flex flex-col gap-2 w-auto flex-grow">
-                        <!-- Bottone per caricare immagine -->
                         <label
                             class="w-full bg-navy-blue-950 text-white font-medium py-2 rounded-md hover:bg-navy-blue-900 transition text-center"
                         >
@@ -316,7 +315,6 @@ const handleUpdateUser = async () => {
                             />
                         </label>
 
-                        <!-- Bottone per eliminare immagine -->
                         <button
                             @click="deleteImage"
                             class="w-full bg-white text-red-900 font-medium py-2 rounded-md hover:bg-gray-300 transition border border-red-900"

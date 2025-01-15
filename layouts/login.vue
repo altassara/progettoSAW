@@ -1,6 +1,5 @@
 <template class="relative">
     <div class="h-screen grid grid-cols-1 lg:grid-cols-10">
-        <!-- Div principale del form -->
         <div
             class="col-span-1 lg:col-span-7 flex items-center justify-center bg-gray-100"
         >

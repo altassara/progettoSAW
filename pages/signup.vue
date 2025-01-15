@@ -48,7 +48,6 @@ const handleSignUp = async () => {
             },
         });
         if (error.value) {
-            // Controlla se l'errore riguarda l'email già in uso
             alertMessage.value = "An error occurred. Please try again.";
 
             isLoading.value = false;
